@@ -1,3 +1,26 @@
-# Tree of Thoughts (ToT)
+Árbol de Pensamientos (ToT)
+import { Callout, FileTree } from 'nextra-theme-docs'
+import {Screenshot} from 'components/screenshot'
+import TOT from '../../img/TOT.png'
+import TOT2 from '../../img/TOT2.png'
+import TOT3 from '../../img/TOT3.png'
 
-This page needs a translation! Feel free to contribute a translation by clicking the `Edit this page` button on the right side.
+Para tareas complejas que requieren exploración o anticipación estratégica, las técnicas tradicionales o simples de promoción quedan cortas. [Yao et al. (2023)](https://arxiv.org/abs/2305.10601) propusieron recientemente el Árbol de Pensamientos (ToT), un marco que generaliza la promoción de cadenas de pensamiento y fomenta la exploración de pensamientos que sirven como pasos intermedios para la resolución de problemas generales con modelos de lenguaje.
+
+ToT mantiene un árbol de pensamientos, donde los pensamientos representan secuencias de lenguaje coherentes que sirven como pasos intermedios para resolver un problema. Este enfoque permite a un LM autoevaluar el progreso que los pensamientos intermedios hacen hacia la resolución de un problema a través de un proceso de razonamiento deliberado. La capacidad del LM para generar y evaluar pensamientos se combina luego con algoritmos de búsqueda (como la búsqueda en anchura y la búsqueda en profundidad) para permitir la exploración sistemática de pensamientos con anticipación y retroceso.
+
+El marco ToT se ilustra a continuación:
+
+<Captura de pantalla src={TOT} alt="Comparación del framework TOT con CoT e IO prompting" />
+Fuente de la imagen: [Yao et al. (2023)](https://arxiv.org/abs/2305.10601) 
+Al utilizar ToT, diferentes tareas requieren definir el número de candidatos y el número de pensamientos/pasos. Por ejemplo, como se muestra en el artículo, el Juego de 24 se utiliza como una tarea de razonamiento matemático que requiere descomponer los pensamientos en 3 pasos, cada uno de ellos involucrando una ecuación intermedia. En cada paso, se mantienen los mejores b=5 candidatos.
+
+Para realizar BFS en ToT para la tarea del Juego de 24, se le solicita al LM que evalúe cada candidato de pensamiento como "seguro/quizás/imposible" con respecto a alcanzar 24. Según indican los autores, "el objetivo es promover soluciones parciales correctas que puedan ser juzgadas dentro de unos pocos ensayos anticipados, y eliminar soluciones parciales imposibles, basadas en el sentido común de 'demasiado grande/pequeño', y establecer el resto como 'quizás'". Los valores se muestrean 3 veces para cada pensamiento. El proceso se ilustra a continuación:
+
+<Captura de pantalla src={TOT2} alt="Juego del 24 resuelto por TOT" />
+Fuente de la imagen: [Yao et al. (2023)](https://arxiv.org/abs/2305.10601) 
+A partir de los resultados informados en la siguiente figura, ToT supera ampliamente a los otros métodos de promoción:
+
+<Captura de pantalla src={TOT3} alt="Comparación de TOT sobre otros métodos con 74% sobre 49% como máximo" />
+Fuente de la imagen: [Yao et al. (2023)](https://arxiv.org/abs/2305.10601) 
+Código disponible [aquí](https://github.com/princeton-nlp/tree-of-thought-llm)
